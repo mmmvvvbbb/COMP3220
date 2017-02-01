@@ -26,8 +26,7 @@ class Scanner
 #               each time nextToken() is invoked.
 #   @c        - A one character lookahead
 	def initialize(filename)
-		@s = ""
-		begin
+		begin 			# Ruby's Try Catch (begin/rescue)
 		@f = File.open(filename,'r:utf-8')
 		if (! @f.eof?)
 			@c = @f.getc()
@@ -35,23 +34,18 @@ class Scanner
 			@c = "!eof!"
 			@f.close()
 		end
-		rescue
+	rescue			#if there is no file an error will be caugth here.
 			@c = "!fnf!"
 		end
 	end
 
 	# Method nextCh() returns the next character in the file
 	def nextCh()
-		if !@s.empty?
-			@c = @s[0]
-			@s[0] = ''
-			puts @c
-		elsif (! @f.eof?)
+		if (! @f.eof?)
 			@c = @f.getc()
 		else
 			@c = "!eof!"
 		end
-
 		return @c
 	end
 	# Method nextToken() reads characters in the file and returns
@@ -61,7 +55,7 @@ class Scanner
 			return Token.new(Token::EOF,"eof") #return end of file.
 		elsif @c == "!fnf!"
 			return Token.new(Token::EOF,"File Not Found")	#return file not found
-		elsif (whitespace?(@c))
+		elsif (whitespace?(@c))	#Check for WHITESPACE
 			str = ""
 			while whitespace?(@c)
 				if @c != " "		#get rid of pesky outputs that ruin outputs
@@ -76,25 +70,32 @@ class Scanner
 			end
 			tok = Token.new(Token::WS,str)
 			return tok
-		elsif (letter?(@c))
+		elsif (letter?(@c))			#Checks for an CHAR
 			str = ""
-			while letter?(@c)
+			while letter?(@c)			#Assembles the IDd
 				str += @c
 				nextCh()
 			end
-			if str == "print"
+			if str == "print"			#Checks for print
 				return Token.new(Token::PRINT, str)
 			end
+#
+#This is where new reserved keywords would go (like while, for, if)
+#
+
 			tok = Token.new(Token::ID,str)
 			return tok
-		elsif (numeric?(@c))
+		elsif (numeric?(@c))		#Checks for DIGIT
 				str = ""
-				while numeric?(@c)
+				while numeric?(@c)	#Assembles INT
 						str += @c
 						nextCh()
 				end
 				tok = Token.new(Token::INT, str)
 				return tok
+#
+#These are the basic operators, very straightforward.
+#
 		elsif (@c == "(")
 			tok = Token.new(Token::LPAREN,@c)
 			nextCh()
@@ -124,6 +125,7 @@ class Scanner
 			nextCh()
 			return tok
 		end
+#if the the @c matches none of the above, then we have found a wrong token.
 		tok = Token.new("WTF","Wrong Token Found: " << @c)
 		nextCh()
 		return tok

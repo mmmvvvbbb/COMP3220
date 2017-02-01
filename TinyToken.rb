@@ -8,32 +8,33 @@ class Token
 	attr_accessor :type
 	attr_accessor :text
 
-	EOF 	= "eof"
+	EOF 		= "eof"
 	LPAREN 	= "("
 	RPAREN 	= ")"
 	ADDOP  	= "+"
-	SUBOP	= "-"
-	MULOP	= "*"
-	DIVOP	= "/"
-	WS	= "Ruby Whitespace"
-	ALPHA	= "Alpha"
-	DIGIT 	= "Digit"
-	EQUAL	= "="
+	SUBOP		= "-"
+	MULOP		= "*"
+	DIVOP		= "/"
+	WS			= "Ruby Whitespace"
+	ID			= "ID"
+	INT 		= "INT"
+	EQUAL		= "="
+	PRINT 	= "print"
 
 
 	def initialize(type,text)
 		@type = type
 		@text = text
 	end
-	
+
 	def get_type
 		return @type
 	end
-	
+
 	def get_text
 		return "\"#{@text}\""
 	end
-	
+
 	def to_s
 	# return "[Type: #{@type} || Text: #{@text}]"
 		return get_text()

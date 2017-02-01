@@ -8,10 +8,14 @@ load "./TinyScanner.rb"
 # to specify the entire path to the file as we did above
 # to load the other ruby modules
 scan = Scanner.new("input.txt")
+output = open("output.txt", 'w')
 tok = scan.nextToken()
 while (tok.get_type() != Token::EOF)
 
-   puts "Token: #{tok} type: #{tok.get_type()}"
+   puts "Token: #{tok} \ttype: #{tok.get_type()}"
+   output.write("Token: #{tok} \ttype: #{tok.get_type()}\n")
    tok = scan.nextToken()
-end 
-puts "Token: #{tok} type: #{tok.get_type()}"
+end
+puts "Token: #{tok} \ttype: #{tok.get_type()}"
+output.write("Token: #{tok} \ttype: #{tok.get_type()}\n")
+output.close()
